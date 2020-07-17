@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
     "convert-csv-json": "^1.0.0",
     "convert-csv-to-json": "0.0.15",
     "edit-json-file": "^1.4.0",

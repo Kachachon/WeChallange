@@ -6,7 +6,9 @@ const path = require('path')
 const ejs = require('ejs')
 const methodOverride = require('method-override')
 const router = express.Router()
-
+const http = require("http")
+const https = require("https")
+const compression = require('compression')
 //Get Review Data
 getReview = async(query) => {
     if (isNaN(query)){
@@ -30,19 +32,25 @@ getReview = async(query) => {
     return reviewStr
 }
 
-const app = express()
+http.globalAgent.maxSockets = Infinity;
+https.globalAgent.maxSockets = Infinity;
 
+const app = express()
 app.set("view engine","ejs")
 app.use(methodOverride('_method'))
+app.use(compression())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended : true}))
+app.use(express.static(__dirname + '/public',{maxAge : 31557600}))
 
 app.get('/',(req,res) => {
+    res.setHeader('Cache-Control','public, max-age=86400')
     res.render("index")
 })
 
 //Get review by a specific ID
 app.get('/reviews/id',(req,res) => {
+    res.setHeader('Cache-Control','public, max-age=86400')
     console.log(`Search by -ID- -> ${req.query.id}`)
     let ID = req.query.id
     var reviewData = getReview(ID)
@@ -59,15 +67,18 @@ app.get('/reviews/id',(req,res) => {
 
 //Search for reviews by a query(Food Text)
 app.get('/reviews',(req,res) => {
+    res.setHeader('Cache-Control','public, max-age=86400')
     console.log(`Search by -QUERY- -> ${req.query.query}`)
     let query = req.query.query
-    //ไอติมมันม่วง
-    var reviewData = getReview(query)
 
+    var reviewData = getReview(query)
+    
+    
     reviewData.then(function(result) {
         reviewText = result.split(";").pop();
         reviewID = result.substring(0, result.indexOf(';'));
 
+        //add Keyword Attribute
         indexOfQuery = reviewText.indexOf(query)
         var openKeyword = "<keyword>"
         var closeKeyword = "</keyword>"
@@ -90,10 +101,11 @@ app.get('/reviews',(req,res) => {
 
 //Editing a review
 app.put('/reviews/edit/:id',(req,res) => {
+    res.setHeader('Cache-Control','public, max-age=86400')
     console.log("EDIT CALLED",req.params.id)
     var editText = req.body.editText
     var ID = req.params.id
-    res.json(Object.assign(reviewData[ID], editText))
+    res.render("index", Object.assign(reviewData[ID], editText))
 })
 
 app.listen(5555,() => {
