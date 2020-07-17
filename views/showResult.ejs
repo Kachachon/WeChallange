@@ -94,14 +94,12 @@
                         <!-- Modal content -->
                         <div class="modal-content">
                             <div>
-                                <form method = "post" action="edit/<%= reviewID %>?_method=PUT">
-                                    <textarea cols="70" rows="9" name = "editText"
+                                <form method = "post" action="/">
+                                    <textarea cols="70" rows="9" name = "editText" id="editText"
                                         style="border: 2px solid blue;
                                         border-radius: 4px;
                                         background-color: white;
-                                        resize: none;">
-                                        
-                                        "<%= reviewText %>"
+                                        resize: none;"><%= reviewID %> : <%= reviewText %>
                                     </textarea>
                                     <input type="submit" name = "<%= reviewID %>" style="position:absolute; position:relative">
                                 </form>
