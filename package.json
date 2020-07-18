@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Kachachon Chatthin",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.19.2",
@@ -19,6 +19,7 @@
     "ejs": "^3.1.3",
     "express": "^4.17.1",
     "express-urlrewrite": "^1.3.0",
+    "jest": "^26.1.0",
     "method-override": "^3.0.0",
     "request": "^2.88.2",
     "xmlhttprequest": "^1.8.0"
